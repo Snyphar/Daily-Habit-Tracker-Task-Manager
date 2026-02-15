@@ -1,0 +1,28 @@
+:root {
+  --task-header-bg: rgb(26, 165, 26);
+}
+
+.task-header {
+  background-color: var(--task-header-bg) !important;
+  color: white !important;
+}
+.circular-progress-bar {
+  width: 100 px;
+  height: 100 px;
+}
+.task-lists {
+  padding: 0;
+}
+.task-list {
+  display: flex;
+  justify-content: space-between; /* opposite sides */
+  align-items: center; /* vertical alignment */
+  padding: 1px;
+  border: 1px solid grey;
+}
+.task-name {
+  align-items: start;
+}
+.task-input {
+  align-items: end;
+}
