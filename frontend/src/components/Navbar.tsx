@@ -7,6 +7,7 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    // const userId = localStorage.getItem("userId");
     const storedEmail = localStorage.getItem("email");
 
     if (token && storedEmail) {
@@ -15,6 +16,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   const handleLogout = (): void => {
+    localStorage.removeItem("userId");
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     setEmail(null);
