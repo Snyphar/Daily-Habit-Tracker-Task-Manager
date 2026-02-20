@@ -1,15 +1,24 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { API_URL } from "../config";
+import { useAuth } from "../AuthContext";
 
-const Login = () => {
+interface LoginResponse {
+  token: string;
+  userId: string;
+  email: string;
+  message?: string;
+}
+
+const Login: React.FC = () => {
   const navigate = useNavigate();
+  const { login } = useAuth(); // ✅ Correct place
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -21,20 +30,20 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      const data: LoginResponse = await res.json();
 
       if (!res.ok) {
         setMessage(data.message || "Login failed");
         return;
       }
 
-      // Save token
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userId", data.userId);
-      localStorage.setItem("email", data.email);
+      // ✅ Use AuthContext login
+      login(data.token, data.email);
 
+      // Redirect after login
       navigate("/");
     } catch (error) {
+      console.error("Login error:", error);
       setMessage("Server error");
     }
   };
