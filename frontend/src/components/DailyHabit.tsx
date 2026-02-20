@@ -25,8 +25,15 @@ Chart.register(
   Legend,
 );
 
+interface Habit {
+  _id: string;
+  name: string;
+  startDate: string;
+  days: string[];
+}
+
 const DailyHabit = () => {
-  const [habits, setHabits] = useState([]);
+  const [habits, setHabits] = useState<Habit[]>([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token"); // Get token from localStorage
@@ -43,18 +50,18 @@ const DailyHabit = () => {
         }
         return res.json();
       })
-      .then((data) => setHabits(data))
+      .then((data: Habit[]) => setHabits(data))
       .catch((err) => console.error("Error fetching habits:", err));
   }, []);
 
   const [newHabitName, setNewHabitName] = useState("");
 
   const today = new Date();
-  const todayStr = [
-    today.getFullYear(),
-    String(today.getMonth() + 1).padStart(2, "0"),
-    String(today.getDate()).padStart(2, "0"),
-  ].join("-");
+  // const todayStr = [
+  //   today.getFullYear(),
+  //   String(today.getMonth() + 1).padStart(2, "0"),
+  //   String(today.getDate()).padStart(2, "0"),
+  // ].join("-");
 
   const currentDay = today.getDay();
   const weekStart = new Date(today);
@@ -121,12 +128,12 @@ const DailyHabit = () => {
       return;
     }
 
-    const startDate = new Date();
-    const startDateStr = [
-      startDate.getFullYear(),
-      String(startDate.getMonth() + 1).padStart(2, "0"),
-      String(startDate.getDate()).padStart(2, "0"),
-    ].join("-");
+    // const startDate = new Date();
+    // const startDateStr = [
+    //   startDate.getFullYear(),
+    //   String(startDate.getMonth() + 1).padStart(2, "0"),
+    //   String(startDate.getDate()).padStart(2, "0"),
+    // ].join("-");
 
     const token = localStorage.getItem("token"); // Get JWT token
     console.log(token);
