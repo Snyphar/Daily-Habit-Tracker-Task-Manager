@@ -1,10 +1,23 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState<string | null>(null);
 
-  const handleLogout = () => {
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const storedEmail = localStorage.getItem("email");
+
+    if (token && storedEmail) {
+      setEmail(storedEmail);
+    }
+  }, []);
+
+  const handleLogout = (): void => {
     localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    setEmail(null);
     navigate("/login");
   };
 
@@ -30,9 +43,18 @@ const Navbar = () => {
             </li>
           </ul>
 
-          <button className="btn btn-outline-danger" onClick={handleLogout}>
-            Logout
-          </button>
+          {email ? (
+            <div className="d-flex align-items-center gap-3">
+              <span className="fw-bold text-primary">{email}</span>
+              <button className="btn btn-outline-danger" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link className="btn btn-outline-primary" to="/login">
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </nav>
